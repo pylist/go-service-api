@@ -1,0 +1,12 @@
+[Server]
+mode = "debug"
+host = "127.0.0.1"
+port = 51012
+
+[DB]
+types = "mysql"
+host = "192.168.5.7:3306"
+name = "go-service-api"
+username = "root"
+password = "Test20210526"
+charset = "utf8mb4"
