@@ -4,4 +4,3 @@ dist/
 # Editor directories and files
 .idea
 .vscode
-go.sum
