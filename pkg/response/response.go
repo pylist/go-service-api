@@ -21,6 +21,22 @@ func Success(ctx *gin.Context) {
 	})
 }
 
+func SuccessMsg(ctx *gin.Context, msg string) {
+	ctx.JSON(http.StatusOK, Response{
+		Code:    code.OK,
+		Message: msg,
+		Data:    map[string]string{},
+	})
+}
+
+func SuccessData(ctx *gin.Context, data any) {
+	ctx.JSON(http.StatusOK, Response{
+		Code:    code.OK,
+		Message: "成功",
+		Data:    data,
+	})
+}
+
 func Failed(ctx *gin.Context, msg string) {
 	ctx.JSON(http.StatusOK, Response{
 		Code:    code.ErrNot,

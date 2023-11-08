@@ -1,6 +1,7 @@
 package router
 
 import (
+	"go-service-api/controller"
 	"go-service-api/pkg/response"
 	"net/http"
 
@@ -17,4 +18,7 @@ func Router(r *gin.Engine) {
 	api.POST("test", func(c *gin.Context) {
 		response.Success(c)
 	})
+	super := api.Group("super")
+	users := super.Group("users")
+	users.POST("create", controller.NewUserController().Create)
 }
