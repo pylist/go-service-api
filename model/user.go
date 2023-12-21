@@ -4,10 +4,16 @@ import "gorm.io/datatypes"
 
 type User struct {
 	Model
-	UID      string `json:"uid"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Location string `json:"location"`
-	RoleID   string `json:"roleId"`
-	Meta     datatypes.JSON	`json:"meta"`
+	Status   int            `json:"status" gorm:"type:tinyint;comment:用户状态"` // 0 正常状态， 1删除
+	UID      string         `json:"uid" gorm:"uniqueIndex;not null;comment:用户唯一标识"`
+	Username string         `json:"username" gorm:"uniqueIndex;not null;comment:用户登录名"`
+	Password string         `json:"password" gorm:"not null;comment:用户登录密码"`
+	Location string         `json:"location" gorm:"comment:用户位置"`
+	NickName string         `json:"nickName" gorm:"comment:用户昵称"`
+	Avatar   string         `json:"avatar" gorm:"comment:用户头像"`
+	Email    string         `json:"email" gorm:"comment:用户邮箱"`
+	Phone    string         `json:"phone" gorm:"comment:用户手机号码"`
+	RoleID   uint           `json:"roleId" gorm:"comment:用户角色ID"`
+	Meta     datatypes.JSON `json:"meta" gorm:"comment:用户个人信息"`
+	Version  int            `json:"version" gorm:"comment:乐观锁"`
 }

@@ -1,10 +1,15 @@
 package controller
 
 import (
+	"fmt"
+	"go-service-api/common"
 	"go-service-api/model"
 	"go-service-api/pkg"
+	"go-service-api/pkg/orm"
 	"go-service-api/pkg/response"
+	"go-service-api/pkg/util"
 	"go-service-api/service"
+	"io"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,13 +26,14 @@ type UserCreateRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// 创建用户
 func (u *UserController) Create(c *gin.Context) {
-	var req UserCreateRequest
+	var req model.User
 	if err := c.ShouldBindJSON(&req); err != nil {
 		response.Failed(c, err.Error())
 		return
 	}
-	user := model.User{}
+	user := req
 	if err := service.NewUserService().Create(&user); err != nil {
 		response.Failed(c, err.Error())
 		return
@@ -40,6 +46,7 @@ type UserLoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// 用户登录
 func (u *UserController) Login(c *gin.Context) {
 	var req UserLoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -61,10 +68,11 @@ func (u *UserController) Login(c *gin.Context) {
 		return
 	}
 	response.SuccessData(c, map[string]interface{}{
-		"token": token,
+		"token": "Bearer " + token,
 	})
 }
 
+// 用户信息
 func (u *UserController) Info(c *gin.Context) {
 	var user model.User
 	if err := service.NewUserService().Info(&user); err != nil {
@@ -79,4 +87,64 @@ func (u *UserController) Info(c *gin.Context) {
 
 func (u *UserController) Logout(c *gin.Context) {
 	response.Success(c)
+}
+
+// 更新用户
+func (u *UserController) Update(c *gin.Context) {
+	var user model.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		response.Failed(c, err.Error())
+		return
+	}
+	if err := service.NewUserService().Update(&user); err != nil {
+		response.Failed(c, err.Error())
+		return
+	}
+	response.Success(c)
+}
+
+// 删除用户
+func (u *UserController) Delete(c *gin.Context) {
+	var user model.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		response.Failed(c, err.Error())
+		return
+	}
+	if err := service.NewUserService().Delete(user.ID); err != nil {
+		response.Failed(c, err.Error())
+		return
+	}
+	response.Success(c)
+}
+
+// 用户列表
+func (u *UserController) List(c *gin.Context) {
+	var users []model.User
+	tx := common.DB.Model(&model.User{})
+	orm.Paginate(c)(tx).Find(&users)
+	response.SuccessData(c, gin.H{
+		"list": users,
+	})
+}
+
+func (u *UserController) UploadAvatar(c *gin.Context) {
+	file, err := c.FormFile("file")
+	if err != nil {
+		response.Failed(c, err.Error())
+		return
+	}
+
+	// 读取文件内容
+	uploadedFile, _ := file.Open()
+	defer uploadedFile.Close()
+	data, _ := io.ReadAll(uploadedFile)
+	path, err := util.NewAvatarSave("").Save(data)
+	if err != nil {
+		response.Failed(c, err.Error())
+		return
+	}
+	fmt.Println(path)
+	response.SuccessData(c, gin.H{
+		"url": path,
+	})
 }

@@ -31,7 +31,7 @@ func (u *UserService) Create(user *model.User) error {
 		return err
 	}
 	user.Password = string(hasedPassword)
-	if err := common.DB.Create(user).Error; err != nil {
+	if err := common.DB.Create(&user).Error; err != nil {
 		return err
 	}
 	return nil
@@ -48,18 +48,31 @@ func (u *UserService) Verify(user *model.User) (*model.User, error) {
 	if err := common.DB.Where("username = ?", user.Username).First(&newUser).Error; err != nil {
 		return nil, err
 	}
+	// 验证密码
 	if err := bcrypt.CompareHashAndPassword([]byte(newUser.Password), []byte(user.Password)); err != nil {
 		return nil, errors.New("密码错误")
-	}
-	// 验证密码
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(user.Password)); err != nil {
-		return nil, err
 	}
 	return &newUser, nil
 }
 
 func (u *UserService) Info(user *model.User) error {
 	if err := common.DB.Where("username = ?", user.Username).First(&user).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// Update 更新用户
+func (u *UserService) Update(user *model.User) error {
+	if err := common.DB.Save(&user).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// Delete 删除用户
+func (u *UserService) Delete(id uint) error {
+	if err := common.DB.Delete(&model.User{}, id).Error; err != nil {
 		return err
 	}
 	return nil

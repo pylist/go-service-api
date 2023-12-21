@@ -1,7 +1,7 @@
 package code
 
 const (
-	OK      = 2000
-	ErrData = 20401
-	ErrNot  = 20404
+	OK      = "success"
+	ErrData = "err_data"
+	ErrNot  = "err_not"
 )

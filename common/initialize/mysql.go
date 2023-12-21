@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-service-api/common"
 	"go-service-api/config"
+	"go-service-api/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -26,4 +27,5 @@ func Mysql() {
 		panic("数据库连接失败:" + err.Error())
 	}
 	common.DB = db
+	db.AutoMigrate(&model.User{}, &model.Menu{}, &model.Role{})
 }
