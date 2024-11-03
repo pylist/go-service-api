@@ -1,0 +1,17 @@
+[Server]
+mode = "debug"
+host = "127.0.0.1"
+port = 3000
+
+[DB]
+types = "mysql"
+host = "127.0.0.1:3306"
+name = "go-service-api"
+username = "go-service-api"
+password = "123456789"
+charset = "utf8mb4"
+
+[Redis]
+addr = "127.0.0.1:6379"
+password = ""
+db = 0
