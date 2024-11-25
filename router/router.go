@@ -21,8 +21,11 @@ func Router(r *gin.Engine) {
 		c.SetCookie("test_cookie", "test", 3600, "/", ".dalao123.com", false, true)
 		response.Success(c)
 	})
-	api.POST("register", controller.NewUserController().Register)
-	api.POST("login", controller.NewUserController().Login)
+	auth := api.Group("auth")
+	auth.POST("register", controller.NewUserController().Register)
+	auth.POST("login", controller.NewUserController().Login)
+	auth.GET("codes", controller.NewUserController().Codes)
+
 	api.GET("getMenus", controller.NewMenuController().GetMenus)
 	super := api.Group("super")
 	{

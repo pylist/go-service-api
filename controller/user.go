@@ -95,7 +95,7 @@ func (u *UserController) Login(c *gin.Context) {
 		return
 	}
 	response.SuccessData(c, map[string]interface{}{
-		"token": "Bearer " + token,
+		"accessToken": token,
 	})
 }
 
@@ -117,6 +117,8 @@ func (u *UserController) Info(c *gin.Context) {
 		"nickName": user.NickName,
 		"username": user.Username,
 		"avatar":   user.Avatar,
+		"roles":    []string{},
+		"realName": user.Username,
 	})
 }
 
@@ -278,4 +280,9 @@ func (u *UserController) GetPermission(c *gin.Context) {
 	response.SuccessData(c, gin.H{
 		"menus": result,
 	})
+}
+
+// 获取权限码
+func (u *UserController) Codes(c *gin.Context) {
+	response.SuccessData(c, []string{"1001", "1002", "1003"})
 }
