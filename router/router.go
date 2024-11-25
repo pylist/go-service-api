@@ -25,6 +25,7 @@ func Router(r *gin.Engine) {
 	auth.POST("register", controller.NewUserController().Register)
 	auth.POST("login", controller.NewUserController().Login)
 	auth.GET("codes", controller.NewUserController().Codes)
+	auth.POST("logout", middleware.Jwt(), controller.NewUserController().Logout)
 
 	api.GET("getMenus", controller.NewMenuController().GetMenus)
 	super := api.Group("super")
@@ -76,6 +77,5 @@ func Router(r *gin.Engine) {
 	user.GET("info", controller.NewUserController().Info)
 	user.POST("uploadAvatar", controller.NewUserController().UploadAvatar)
 	user.GET("getMenus", controller.NewMenuController().GetMenus)
-	user.POST("logout", controller.NewUserController().Logout)
 	user.GET("getPermission", controller.NewUserController().GetPermission)
 }

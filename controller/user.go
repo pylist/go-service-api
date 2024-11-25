@@ -184,9 +184,12 @@ func (u *UserController) List(c *gin.Context) {
 
 		tx.Where("dept_id IN ?", deptIds)
 	}
+	var count int64
+	tx.Count(&count)
 	orm.Paginate(c)(tx).Preload("Role").Preload("Dept").Find(&users)
 	response.SuccessData(c, gin.H{
-		"list": users,
+		"list":  users,
+		"total": count,
 	})
 }
 
