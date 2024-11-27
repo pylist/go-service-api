@@ -188,7 +188,7 @@ func (u *UserController) List(c *gin.Context) {
 	tx.Count(&count)
 	orm.Paginate(c)(tx).Preload("Role").Preload("Dept").Find(&users)
 	response.SuccessData(c, gin.H{
-		"list":  users,
+		"items": users,
 		"total": count,
 	})
 }

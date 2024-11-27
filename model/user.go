@@ -4,7 +4,7 @@ import "gorm.io/datatypes"
 
 type User struct {
 	Model
-	Status   int            `json:"status" gorm:"type:tinyint;comment:用户状态"` // 0 正常状态， 1删除
+	Status   int            `json:"status" gorm:"type:tinyint;comment:用户状态"` // 0 正常状态， 1禁用
 	UID      string         `json:"uid" gorm:"uniqueIndex;not null;comment:用户唯一标识"`
 	Username string         `json:"username" gorm:"uniqueIndex;not null;comment:用户登录名"`
 	Password string         `json:"password" gorm:"not null;comment:用户登录密码"`
