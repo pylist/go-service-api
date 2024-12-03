@@ -77,6 +77,18 @@ func Failed(ctx *gin.Context, msg string) {
 	ctx.Abort()
 }
 
+func FailedAuth(ctx *gin.Context, msg ...string) {
+	msgStr := "认证失败"
+	if len(msg) > 0 {
+		msgStr = msg[0]
+	}
+	ctx.JSON(http.StatusUnauthorized, Response{
+		Code:    StatusErrAuth,
+		Message: msgStr,
+		Data:    map[string]string{},
+	})
+}
+
 func FailedData(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, Response{
 		Code:    StatusErrData,

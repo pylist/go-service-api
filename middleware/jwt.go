@@ -20,7 +20,7 @@ func Jwt() gin.HandlerFunc {
 		token := info[1]
 		claims, err := pkg.NewToken().ValidatingToken(token)
 		if err != nil {
-			response.ErrorCode(c, response.StatusErrTokenInvalid)
+			response.FailedAuth(c, response.GetMsg(response.StatusErrTokenInvalid))
 			c.Abort()
 			return
 		}

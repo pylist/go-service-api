@@ -55,6 +55,13 @@ func (u *UserController) Register(c *gin.Context) {
 		response.ErrorMsg(c, err.Error())
 		return
 	}
+	// 检查是否开启注册
+	var option model.Option
+	global.DB.Where(&model.Option{Key: "register"}).First(&option)
+	if option.Value == "false" {
+		response.Failed(c, "注册已关闭")
+		return
+	}
 	user := model.User{
 		Username: req.Username,
 		Password: req.Password,
@@ -109,7 +116,7 @@ func (u *UserController) Info(c *gin.Context) {
 	var user model.User
 	user.Username = username
 	if err := service.NewUserService().Info(&user); err != nil {
-		response.Failed(c, err.Error())
+		response.FailedAuth(c)
 		return
 
 	}

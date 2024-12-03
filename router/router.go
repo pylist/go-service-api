@@ -28,7 +28,12 @@ func Router(r *gin.Engine) {
 	auth.POST("logout", middleware.Jwt(), controller.NewUserController().Logout)
 
 	api.GET("getMenus", controller.NewMenuController().GetMenus)
-	super := api.Group("super")
+
+	option := api.Group("option", middleware.Jwt())
+	option.GET("getOptions", controller.NewOptionController().GetOptions)
+	option.POST("setOptions", controller.NewOptionController().SetOptions)
+
+	super := api.Group("super", middleware.Jwt())
 	{
 		users := super.Group("user")
 		users.POST("create", controller.NewUserController().Create)
