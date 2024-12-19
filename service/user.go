@@ -66,7 +66,7 @@ func (u *UserService) Info(user *model.User) error {
 func (u *UserService) Update(user *model.User) error {
 	user.Dept = nil
 	user.Role = nil
-	if err := global.DB.Debug().Save(&user).Error; err != nil {
+	if err := global.DB.Save(&user).Error; err != nil {
 		return err
 	}
 	return nil

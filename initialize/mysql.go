@@ -29,6 +29,9 @@ func Mysql() {
 		panic("数据库连接失败:" + err.Error())
 	}
 	global.DB = db
+	if config.Server.Mode == "debug" {
+		global.DB = db.Debug()
+	}
 	err = db.AutoMigrate(&model.User{}, &model.Menu{}, &model.Role{}, &model.Dept{}, &model.Option{})
 	if err != nil {
 		panic("数据库迁移失败:" + err.Error())

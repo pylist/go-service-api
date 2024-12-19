@@ -140,7 +140,7 @@ func (u *UserController) Update(c *gin.Context) {
 		response.Failed(c, err.Error())
 		return
 	}
-	if err := service.NewUserService().Update(&user); err != nil {
+	if err := global.DB.Model(&user).Select("username", "nick_name", "avatar", "email", "phone", "dept_id", "role_id").Where("id = ?", user.ID).Updates(&user).Error; err != nil {
 		response.Failed(c, err.Error())
 		return
 	}
