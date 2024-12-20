@@ -1,5 +1,9 @@
 # go 服务项目的后端 api
 
+
+# 后台管理界面, 基于vue-vben-admin项目二开
+[https://github.com/pylist/vue-vben-admin](https://github.com/pylist/vue-vben-admin)
+
 ### 使用技术
 
 - [gin](https://github.com/gin-gonic/gin) 一个常用的 web 框架
