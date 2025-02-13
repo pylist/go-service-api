@@ -126,6 +126,7 @@ func (u *UserController) Info(c *gin.Context) {
 		"avatar":   user.Avatar,
 		"roles":    []string{},
 		"realName": user.Username,
+		"phone":    user.Phone,
 	})
 }
 
