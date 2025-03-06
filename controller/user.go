@@ -43,6 +43,7 @@ func (u *UserController) Create(c *gin.Context) {
 
 // 用户注册
 type UserRegisterRequest struct {
+	NickName string `json:"nickName"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Phone    string `json:"phone"`
@@ -63,6 +64,7 @@ func (u *UserController) Register(c *gin.Context) {
 		return
 	}
 	user := model.User{
+		NickName: req.NickName,
 		Username: req.Username,
 		Password: req.Password,
 		Phone:    req.Phone,
